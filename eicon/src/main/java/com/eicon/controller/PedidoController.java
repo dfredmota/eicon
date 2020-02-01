@@ -68,7 +68,6 @@ public class PedidoController {
 
 		} else {
 
-			pedido.setStatus(status);
 			
 			pedidoService.update(pedido);
 

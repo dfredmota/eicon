@@ -53,7 +53,7 @@ public class ItemPedido implements Serializable {
 	private String descricao;
 
 	private BigDecimal valor;
-	
-	private Integer qtd;
+
+	private Integer quantidade;
 
 }

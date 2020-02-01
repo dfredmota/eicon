@@ -46,19 +46,8 @@ public class Cliente implements Serializable {
 	private String cpf;
 	
 	private String telefone;
-	
-	@JsonIgnore
-	@CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-    protected Date createdDate; 
 
-	@JsonIgnore
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date modified;
-
+	private String endereco;
 
 
 }
