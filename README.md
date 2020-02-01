@@ -1,6 +1,6 @@
 Eicon - Teste
 
-Api Eicon com Spring Boot
+Api Cadastro de Clientes e Produtos
 
 Tecnologias Ultilizadas:
 
