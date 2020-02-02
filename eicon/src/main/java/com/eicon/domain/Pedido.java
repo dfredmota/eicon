@@ -39,7 +39,7 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	@Column(name="created_at")
@@ -51,6 +51,9 @@ public class Pedido implements Serializable {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "pedido")
 	@JsonManagedReference
-	private List<ItemPedido> itens;	
+	private List<ItemPedido> itens;
+
+	@Transient
+	private Long clienteId;
 
 }

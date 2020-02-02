@@ -1,21 +1,20 @@
 package com.eicon.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import com.eicon.domain.FiltroConsultaPedido;
 import com.eicon.domain.Pedido;
 import com.eicon.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.eicon.util.ApiError;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "pedidos")
@@ -24,17 +23,26 @@ public class PedidoController {
 	@Autowired
 	private PedidoService pedidoService;
 
-	@RequestMapping(value = "/list/{observacoes}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.POST,
+	consumes = MediaType.APPLICATION_JSON_VALUE,
+	produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin
-	public ResponseEntity<List<Pedido>> listAll(@PathVariable("observacoes") String descricao) {
+	public ResponseEntity<List<Pedido>> listAll(@RequestBody FiltroConsultaPedido filtroConsultaPedido) {
 
-		List<Pedido> todos = pedidoService.searchByFilters(descricao.replaceAll("descricao=", ""));
+	    if(filtroConsultaPedido.getDataCadastro() != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(filtroConsultaPedido.getDataCadastro());
+            c.add(Calendar.DATE, 1);
+            filtroConsultaPedido.setDataCadastro(c.getTime());
+        }
 
-		if (todos.isEmpty()) {
+		List<Pedido> lista = pedidoService.findPedidoByFilters(filtroConsultaPedido);
+
+		if (lista.isEmpty()) {
 			return new ResponseEntity<List<Pedido>>(HttpStatus.NO_CONTENT);
 		}
 		
-		return new ResponseEntity<List<Pedido>>(todos, HttpStatus.OK);
+		return new ResponseEntity<List<Pedido>>(lista, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/byid/{id}", method = RequestMethod.GET)
@@ -48,6 +56,42 @@ public class PedidoController {
 		}
 		
 		return new ResponseEntity<Pedido>(todos, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin
+	public ResponseEntity<Object> salvar(@RequestBody Pedido pedido, UriComponentsBuilder ucBuilder) {
+
+		List<String> erros = new ArrayList<String>();
+
+		if (pedido != null) {
+
+			if (pedido.getValorTotal() == null) {
+
+				erros.add("O Valor é obrigatório.");
+			}
+
+		}
+
+		if (!erros.isEmpty()) {
+
+			ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Erros", erros);
+			return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+		} else {
+
+			pedidoService.create(pedido);
+
+			HttpHeaders headers = new HttpHeaders();
+
+			headers.setLocation(ucBuilder.path("/pedidos/{id}").buildAndExpand(pedido.getId()).toUri());
+
+			return new ResponseEntity<Object>(headers, HttpStatus.CREATED);
+
+		}
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/save")

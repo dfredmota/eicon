@@ -25,7 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "itens_pedido")
+@Table(name = "item_pedido")
 @Getter
 @Setter
 @NoArgsConstructor

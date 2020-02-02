@@ -21,16 +21,28 @@ public class ClienteController {
 	@Autowired
 	private ClienteService service;
 
-	@RequestMapping(value = "/list/{nome}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@CrossOrigin
-	public ResponseEntity<List<Cliente>> listAll(@PathVariable("nome") String descricao) {
+	public ResponseEntity<List<Cliente>> listAll() {
 
-		List<Cliente> todos = service.searchByFilters(descricao.replaceAll("descricao=", ""));
+		List<Cliente> todos = service.all();
 
 		if (todos.isEmpty())
 			return new ResponseEntity<List<Cliente>>(HttpStatus.NO_CONTENT);
 		
 		return new ResponseEntity<List<Cliente>>(todos, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/getById/{id}", method = RequestMethod.GET)
+	@CrossOrigin
+	public ResponseEntity<Cliente> getCliente(@PathVariable("id") String id) {
+
+		Cliente cliente = service.getById(Long.valueOf(id));
+
+		if (cliente == null)
+			return new ResponseEntity<Cliente>(HttpStatus.NO_CONTENT);
+
+		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 
 
