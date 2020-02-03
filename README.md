@@ -117,34 +117,34 @@ json:
 
 json de retorno:
 
-[
-    {
-        "id": 3,
-        "observacoes": "Muito Queijo",
-        "cliente": {
-            "id": 1,
-            "nome": "Fred Mota",
-            "cpf": "01282929380",
-            "telefone": "012345678",
-            "endereco": "RUA SOUSA MOTA"
-        },
-        "createdDate": "02/02/2020 05:21",
-        "valorTotal": 460.00,
-        "itens": [
-            {
-                "id": 3,
-                "descricao": "cerveja",
-                "valor": 35.50,
-                "quantidade": 1
-            },
-            {
-                "id": 4,
-                "descricao": "mac donalds",
-                "valor": 195.50,
-                "quantidade": 1
-            }
-        ],
-        "clienteId": null
-    }
+[ 
+   { 
+      "id":3,
+      "observacoes":"Muito Queijo",
+      "cliente":{ 
+         "id":1,
+         "nome":"Fred Mota",
+         "cpf":"01282929380",
+         "telefone":"012345678",
+         "endereco":"RUA SOUSA MOTA"
+      },
+      "createdDate":"02/02/2020 05:21",
+      "valorTotal":460.00,
+      "itens":[ 
+         { 
+            "id":3,
+            "descricao":"cerveja",
+            "valor":35.50,
+            "quantidade":1
+         },
+         { 
+            "id":4,
+            "descricao":"mac donalds",
+            "valor":195.50,
+            "quantidade":1
+         }
+      ],
+      "clienteId":null
+   }
 ]
     
