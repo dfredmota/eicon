@@ -47,6 +47,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 		entity = repository.save(entity);
 
+		// TODO : validar valores do itens com valor total do pedido
 		for(ItemPedido item : entity.getItens()) {
 
 			item.setPedido(entity);
